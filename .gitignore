@@ -1,0 +1,21 @@
+# --- backend (Gradle / Java) ---
+backend/.gradle/
+backend/build/
+backend/out/
+backend/bin/
+*.class
+
+# --- frontend (Angular / Node) ---
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+
+# --- IDE / SO ---
+.idea/
+*.iml
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.log
