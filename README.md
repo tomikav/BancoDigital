@@ -43,4 +43,4 @@ Trabajamos en `feature`, de ahí pasamos a `dev` con un pull request y cuando to
 ## Integrantes
 
 - Javier Andrés Gómez Labrador — backend
-- Cristhian David Gómez Mendoza — frontend
+- David Gómez — frontend
