@@ -1,0 +1,68 @@
+<header class="page-head">
+  <h1>Seguridad</h1>
+  <p>Cambia tu contraseña de acceso o tu PIN transaccional.</p>
+</header>
+
+<div class="grid grid-2">
+  <form class="card" [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+    <h2>Contraseña de acceso</h2>
+    @if (passwordOk()) {
+      <div class="alert ok">✓ {{ passwordOk() }}</div>
+    }
+    @if (passwordError()) {
+      <div class="alert error">{{ passwordError() }}</div>
+    }
+    <div class="field">
+      <label for="cp">Contraseña actual</label>
+      <input id="cp" class="input" type="password" formControlName="currentPassword" />
+    </div>
+    <div class="field">
+      <label for="np">Nueva contraseña</label>
+      <input id="np" class="input" type="password" formControlName="newPassword" />
+      <span class="hint">Mínimo 8 caracteres.</span>
+    </div>
+    <div class="field">
+      <label for="cf">Confirmar nueva contraseña</label>
+      <input id="cf" class="input" type="password" formControlName="confirm" />
+    </div>
+    <button class="btn" type="submit" [disabled]="passwordLoading()">
+      @if (passwordLoading()) { <span class="spinner"></span> } Cambiar contraseña
+    </button>
+  </form>
+
+  <form class="card" [formGroup]="pinForm" (ngSubmit)="changePin()">
+    <h2>PIN transaccional</h2>
+    <p class="muted small-text">Se pide en cada retiro de efectivo. Debe tener exactamente 4 dígitos.</p>
+    @if (pinOk()) {
+      <div class="alert ok">✓ {{ pinOk() }}</div>
+    }
+    @if (pinError()) {
+      <div class="alert error">{{ pinError() }}</div>
+    }
+
+    <label class="row check">
+      <input type="checkbox" [checked]="firstPin()" (change)="onFirstPinChange($event)" />
+      Es mi primer PIN (activación)
+    </label>
+
+    @if (!firstPin()) {
+      <div class="field">
+        <label for="cpin">PIN actual</label>
+        <input id="cpin" class="input pin-input" type="password" maxlength="4" placeholder="••••" formControlName="currentPin" />
+      </div>
+    }
+    <div class="row">
+      <div class="field">
+        <label for="npin">Nuevo PIN</label>
+        <input id="npin" class="input pin-input" type="password" maxlength="4" placeholder="••••" formControlName="newPin" />
+      </div>
+      <div class="field">
+        <label for="cnpin">Confirmar PIN</label>
+        <input id="cnpin" class="input pin-input" type="password" maxlength="4" placeholder="••••" formControlName="confirm" />
+      </div>
+    </div>
+    <button class="btn" type="submit" [disabled]="pinLoading()">
+      @if (pinLoading()) { <span class="spinner"></span> } {{ firstPin() ? 'Activar PIN' : 'Cambiar PIN' }}
+    </button>
+  </form>
+</div>
