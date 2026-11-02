@@ -41,4 +41,4 @@ La API queda en `http://localhost:8080`. Usuario y clave de MySQL en `backend/sr
 ## Créditos
 
 - Backend: [JavierWebDev](https://github.com/JavierWebDev) — historial original conservado en este repo.
-- Frontend: Cristhian David Gómez Mendoza.
+- Frontend: David Gómez.
