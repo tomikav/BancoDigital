@@ -1,17 +1,13 @@
-# --- backend (Gradle / Java) ---
-backend/.gradle/
-backend/build/
-backend/out/
-backend/bin/
+apibank/.gradle/
+apibank/build/
+apibank/out/
+apibank/bin/
 *.class
 
-# --- frontend (Angular / Node) ---
-frontend/node_modules/
-frontend/dist/
-frontend/.angular/
-frontend/coverage/
+frontbank/node_modules/
+frontbank/dist/
+frontbank/.angular/
 
-# --- IDE / SO ---
 .idea/
 *.iml
 .vscode/*
