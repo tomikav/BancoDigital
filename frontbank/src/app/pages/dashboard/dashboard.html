@@ -1,0 +1,54 @@
+<header class="page-head">
+  <h1>Hola, {{ auth.profile()?.name }}</h1>
+  <p>Este es el resumen de tu cuenta.</p>
+</header>
+
+@if (error()) {
+  <div class="alert error">{{ error() }}</div>
+}
+
+<section class="balance-card">
+  <div class="top">
+    <span class="label">Saldo disponible</span>
+    <button class="refresh" (click)="loadBalance()" [disabled]="loading()" title="Actualizar saldo">
+      <span [class.spin]="loading()">↻</span> Actualizar
+    </button>
+  </div>
+  <div class="amount money">{{ api.balance() | cop }} <small>COP</small></div>
+  <div class="meta">
+    @if (account(); as b) {
+      <span>Cuenta N.º {{ b.accountId }}</span>
+      <span>Consultado: {{ b.consultedAt | date: 'dd/MM/yyyy, h:mm:ss a' }}</span>
+    } @else {
+      <span>Consultando…</span>
+    }
+  </div>
+</section>
+
+@if (api.balance() === 0) {
+  <div class="alert info">Tu saldo es $0. Haz un depósito para empezar a operar.</div>
+}
+
+<h2 class="section-title">¿Qué quieres hacer?</h2>
+<div class="actions">
+  <a routerLink="../depositar" class="action">
+    <span class="ico dep">↓</span>
+    <b>Depositar</b>
+    <small>Ingresa dinero a tu cuenta</small>
+  </a>
+  <a routerLink="../retirar" class="action">
+    <span class="ico ret">↑</span>
+    <b>Retirar efectivo</b>
+    <small>Cajero inteligente con PIN</small>
+  </a>
+  <a routerLink="../perfil" class="action">
+    <span class="ico per">◉</span>
+    <b>Mis datos</b>
+    <small>Correo, teléfono y dirección</small>
+  </a>
+  <a routerLink="../seguridad" class="action">
+    <span class="ico seg">⚿</span>
+    <b>Seguridad</b>
+    <small>Contraseña y PIN</small>
+  </a>
+</div>
