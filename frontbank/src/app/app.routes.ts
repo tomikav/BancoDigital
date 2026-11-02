@@ -13,6 +13,7 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'inicio' },
       { path: 'inicio', loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard) },
       { path: 'depositar', loadComponent: () => import('./pages/deposit/deposit').then((m) => m.Deposit) },
+      { path: 'perfil', loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile) },
     ],
   },
   { path: '**', redirectTo: 'app' },
