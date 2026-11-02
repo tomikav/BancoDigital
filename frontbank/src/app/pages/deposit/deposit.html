@@ -1,0 +1,48 @@
+<header class="page-head">
+  <h1>Depositar fondos</h1>
+  <p>Ingresa dinero a tu cuenta. Saldo actual: <b class="money">{{ api.balance() | cop }}</b></p>
+</header>
+
+<div class="grid grid-2">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Monto a depositar</h2>
+
+    @if (error()) {
+      <div class="alert error">{{ error() }}</div>
+    }
+
+    <div class="field">
+      <label for="amount">Valor (COP)</label>
+      <div class="input-money">
+        <span>$</span>
+        <input id="amount" class="input" type="number" min="1" step="1000" placeholder="0"
+               [formControl]="amount" />
+      </div>
+    </div>
+
+    <div class="row quick">
+      @for (q of quickAmounts; track q) {
+        <button type="button" class="chip" (click)="amount.setValue(q)">{{ q | cop }}</button>
+      }
+    </div>
+
+    <button class="btn block" type="submit" [disabled]="loading()">
+      @if (loading()) { <span class="spinner"></span> } Confirmar depósito
+    </button>
+  </form>
+
+  @if (receipt(); as r) {
+    <div class="card">
+      <div class="alert ok"><div><strong>{{ clean(r.message) }}</strong>Tu saldo ya fue actualizado.</div></div>
+      <h2>Comprobante</h2>
+      <dl class="receipt">
+        <dt>N.º transacción</dt><dd class="money">#{{ r.transactionId }}</dd>
+        <dt>Tipo</dt><dd>Depósito</dd>
+        <dt>Monto</dt><dd class="money">{{ r.amount | cop }}</dd>
+        <dt>Nuevo saldo</dt><dd class="money">{{ r.balanceAfter | cop }}</dd>
+        <dt>Fecha</dt><dd>{{ r.createdAt | date: 'dd/MM/yyyy, h:mm a' }}</dd>
+      </dl>
+    </div>
+  }
+</div>
+
