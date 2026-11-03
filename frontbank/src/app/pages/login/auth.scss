@@ -1,0 +1,30 @@
+.auth-wrap { display: grid; grid-template-columns: 1fr 1.1fr; min-height: 100vh; }
+.auth-side {
+  background: radial-gradient(circle at 20% 0%, #134e4a 0%, var(--ink) 60%);
+  color: #e2e8f0; padding: 48px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.brand { font-weight: 800; font-size: 1.15rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+.logo { color: var(--brand-2); font-size: 1.3rem; }
+.side-copy h2 { font-size: 2.3rem; line-height: 1.15; color: #fff; max-width: 420px; }
+.side-copy p { color: #94a3b8; max-width: 400px; line-height: 1.6; }
+.side-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; font-size: 0.92rem; }
+.side-list li::before { content: '✓'; color: var(--brand-2); font-weight: 800; margin-right: 10px; }
+
+.auth-main { display: flex; align-items: center; justify-content: center; padding: 32px; }
+.auth-card { width: 100%; max-width: 420px; }
+.auth-card h1 { font-size: 1.8rem; font-weight: 800; }
+.sub { margin: 6px 0 24px; }
+.switch { text-align: center; font-size: 0.9rem; margin-top: 18px; color: var(--muted); }
+.mock-toggle {
+  margin-top: 28px; display: flex; gap: 12px; align-items: flex-start; cursor: pointer;
+  padding: 14px; border: 1.5px dashed var(--line); border-radius: 12px; font-size: 0.85rem;
+}
+.mock-toggle input { margin-top: 3px; accent-color: var(--brand); }
+.mock-toggle small { display: block; color: var(--muted); margin-top: 2px; }
+.mock-toggle code { font-family: var(--mono); font-size: 0.78rem; background: #eef2f6; padding: 1px 5px; border-radius: 4px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+@media (max-width: 860px) {
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-side { display: none; }
+}
