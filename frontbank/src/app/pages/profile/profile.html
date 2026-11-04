@@ -1,0 +1,55 @@
+<header class="page-head">
+  <h1>Mis datos</h1>
+  <p>Mantén tu información de contacto actualizada.</p>
+</header>
+
+<div class="grid grid-2">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Datos de contacto</h2>
+
+    @if (success()) { <div class="alert ok">✓ {{ success() }}</div> }
+    @if (error()) { <div class="alert error">{{ error() }}</div> }
+
+    <div class="field">
+      <label for="email">Correo electrónico</label>
+      <input id="email" class="input" type="email" formControlName="email" placeholder="nombre@correo.com"
+             [class.invalid]="hasError('email')" />
+      @if (fieldErrors()['email']) { <span class="err">{{ fieldErrors()['email'] }}</span> }
+      @else if (form.controls.email.touched && form.controls.email.invalid) { <span class="err">Formato de correo inválido.</span> }
+    </div>
+
+    <div class="field">
+      <label for="phone">Teléfono</label>
+      <input id="phone" class="input" inputmode="numeric" maxlength="10" formControlName="phone" placeholder="3001234567"
+             [class.invalid]="hasError('phone')" />
+      <span class="hint">10 dígitos, solo números.</span>
+      @if (fieldErrors()['phone']) { <span class="err">{{ fieldErrors()['phone'] }}</span> }
+      @else if (form.controls.phone.touched && form.controls.phone.invalid) { <span class="err">Debe tener exactamente 10 dígitos.</span> }
+    </div>
+
+    <div class="field">
+      <label for="address">Dirección</label>
+      <input id="address" class="input" formControlName="address" placeholder="Calle 00 # 00-00"
+             [class.invalid]="hasError('address')" />
+      @if (fieldErrors()['address']) { <span class="err">{{ fieldErrors()['address'] }}</span> }
+    </div>
+
+    <button class="btn" type="submit" [disabled]="loading()">
+      @if (loading()) { <span class="spinner"></span> } Guardar cambios
+    </button>
+  </form>
+
+  <div class="card">
+    <h2>Titular de la cuenta</h2>
+    @if (auth.profile(); as p) {
+      <dl class="receipt">
+        <dt>Nombre</dt><dd>{{ p.name }} {{ p.lastName }}</dd>
+        <dt>Usuario</dt><dd>{{ p.user }}</dd>
+        <dt>Nacimiento</dt><dd>{{ p.birthDate | date: 'dd/MM/yyyy' }}</dd>
+        <dt>Correo</dt><dd>{{ p.email || '—' }}</dd>
+        <dt>Teléfono</dt><dd>{{ p.phone || '—' }}</dd>
+        <dt>Dirección</dt><dd>{{ p.address || '—' }}</dd>
+      </dl>
+    }
+  </div>
+</div>

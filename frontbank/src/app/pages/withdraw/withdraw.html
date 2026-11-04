@@ -1,0 +1,115 @@
+<header class="page-head">
+  <h1>Retirar efectivo</h1>
+  <p>Cajero inteligente. Saldo disponible: <b class="money">{{ api.balance() | cop }}</b></p>
+</header>
+
+<div class="rules">
+  <div><span>PIN</span><b>4 dígitos</b></div>
+  <div><span>Mínimo</span><b class="money">{{ minWithdrawal | cop }}</b></div>
+  <div><span>Tope diario</span><b class="money">{{ dailyLimit | cop }}</b></div>
+  <div><span>Billetes</span><b class="money">100k · 50k · 20k · 10k</b></div>
+</div>
+
+<div class="grid grid-2">
+  <form class="card" [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Solicitud de retiro</h2>
+
+    @if (errorTitle()) {
+      <div class="alert error">
+        <div>
+          <strong>✕ {{ errorTitle() }}</strong>
+          {{ errorMessage() }}
+          @if (errorCode() === 'PIN_NOT_ACTIVATED') {
+            <br /><a routerLink="../seguridad">Activa tu PIN aquí →</a>
+          }
+        </div>
+      </div>
+    }
+
+    <div class="field">
+      <label for="amount">Monto a retirar (COP)</label>
+      <div class="input-money">
+        <span>$</span>
+        <input id="amount" class="input" type="number" min="0" step="10000" placeholder="0" formControlName="amount"
+               [class.invalid]="warning() !== ''" />
+      </div>
+      @if (warning()) {
+        <span class="err">{{ warning() }}</span>
+      }
+    </div>
+
+    <div class="row quick">
+      @for (q of quickAmounts; track q) {
+        <button type="button" class="chip" (click)="form.get('amount')!.setValue(q)">{{ q | cop }}</button>
+      }
+    </div>
+
+    <div class="field">
+      <label for="pin">PIN de seguridad</label>
+      <input id="pin" class="input pin-input" type="password" maxlength="4" placeholder="••••" autocomplete="off"
+             formControlName="pin" />
+      @if (form.get('pin')!.touched && form.get('pin')!.invalid) {
+        <span class="err">El PIN debe tener exactamente 4 dígitos.</span>
+      }
+    </div>
+
+    <button class="btn block" type="submit" [disabled]="loading()">
+      @if (loading()) { <span class="spinner"></span> } Retirar
+    </button>
+
+    @if (withdrawnToday() > 0) {
+      <div class="daily">
+        <div class="daily-head">
+          <span>Retirado hoy</span>
+          <b class="money">{{ withdrawnToday() | cop }} / {{ dailyLimit | cop }}</b>
+        </div>
+        <div class="bar"><div [style.width.%]="dailyPercent()"></div></div>
+      </div>
+    }
+  </form>
+
+  <div class="card">
+    @if (result(); as r) {
+      <div class="alert ok"><div><strong>✓ {{ clean(r.message) }}</strong>Retira tu dinero. Tu saldo ya fue actualizado.</div></div>
+      <h2>Entrega de efectivo</h2>
+      <div class="bills">
+        @for (b of r.bills; track b.denomination) {
+          <div class="bill-row">
+            <div class="stack">
+              @for (i of billCopies(b.quantity); track i) {
+                <div class="bill" [class]="'bill d' + b.denomination" [style.left.px]="i * 6" [style.top.px]="8 - i * 2">{{ b.denomination / 1000 }}k</div>
+              }
+            </div>
+            <span class="qty">{{ b.quantity }} × <b class="money">{{ b.denomination | cop }}</b></span>
+            <span class="money sub">{{ b.quantity * b.denomination | cop }}</span>
+          </div>
+        }
+      </div>
+      <dl class="receipt">
+        <dt>Total billetes</dt><dd>{{ r.totalBills }}</dd>
+        <dt>Monto retirado</dt><dd class="money">{{ r.amount | cop }}</dd>
+        <dt>Nuevo saldo</dt><dd class="money">{{ r.balanceAfter | cop }}</dd>
+        <dt>Fecha</dt><dd>{{ r.createdAt | date: 'dd/MM/yyyy, h:mm a' }}</dd>
+      </dl>
+    } @else {
+      <h2>Vista previa de billetes</h2>
+      @if (preview(); as p) {
+        <p class="muted">El cajero entregará la menor cantidad de billetes posible:</p>
+        <div class="bills">
+          @for (b of p; track b.denomination) {
+            <div class="bill-row">
+              <div class="stack">
+                @for (i of billCopies(b.quantity); track i) {
+                  <div class="bill" [class]="'bill d' + b.denomination" [style.left.px]="i * 6" [style.top.px]="8 - i * 2">{{ b.denomination / 1000 }}k</div>
+                }
+              </div>
+              <span class="qty">{{ b.quantity }} × <b class="money">{{ b.denomination | cop }}</b></span>
+            </div>
+          }
+        </div>
+      } @else {
+        <p class="muted">Escribe un monto válido para ver cómo se entregará en billetes.</p>
+      }
+    }
+  </div>
+</div>
