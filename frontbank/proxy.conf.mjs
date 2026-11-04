@@ -1,13 +1,7 @@
-export default {
-  '/api': {
-    target: 'http://localhost:8080',
+export default [
+  {
+    context: ['/users', '/accounts', '/auth'],
+    target: 'http://localhost:4200',
     secure: false,
-    changeOrigin: true,
-    rewrite: (path) => path.replace(/^\/api/, ''),
-    configure: (proxy) => {
-      proxy.on('proxyRes', (res) => {
-        delete res.headers['www-authenticate'];
-      });
-    },
   },
-};
+];

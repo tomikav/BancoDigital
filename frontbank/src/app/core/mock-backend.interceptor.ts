@@ -92,12 +92,12 @@ function money(n: number): string {
 
 export const mockBackendInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
-  if (!auth.mockMode() || !req.url.startsWith('/api')) {
+  if (!auth.mockMode()) {
     return next(req);
   }
 
   const users = getUsers();
-  const path = req.url.replace('/api', '');
+  const path = req.url;
   const body: any = req.body || {};
 
   if (req.method === 'POST' && path === '/users/register') {

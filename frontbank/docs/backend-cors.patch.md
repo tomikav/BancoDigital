@@ -62,4 +62,4 @@ public class SecurityConfig {
 }
 ```
 
-Si aplicas este parche, en el front cambia `/api` por `http://localhost:8080` en `bank-api.service.ts` y `auth.service.ts` (o crea un `environment.ts` con la URL).
+Hoy no hace falta: Spring Boot sirve el front y la API juntos en http://localhost:4200, así que es el mismo origen.
