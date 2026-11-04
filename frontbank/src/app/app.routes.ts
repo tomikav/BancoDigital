@@ -10,7 +10,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./pages/shell/shell').then((m) => m.Shell),
     children: [
-
+      { path: '', pathMatch: 'full', redirectTo: 'inicio' },
+      { path: 'inicio', loadComponent: () => import('./pages/dashboard/dashboard').then((m) => m.Dashboard) },
+      { path: 'depositar', loadComponent: () => import('./pages/deposit/deposit').then((m) => m.Deposit) },
+      { path: 'retirar', loadComponent: () => import('./pages/withdraw/withdraw').then((m) => m.Withdraw) },
+      { path: 'perfil', loadComponent: () => import('./pages/profile/profile').then((m) => m.Profile) },
+      { path: 'seguridad', loadComponent: () => import('./pages/security/security').then((m) => m.Security) },
     ],
   },
   { path: '**', redirectTo: 'app' },
