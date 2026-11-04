@@ -1,44 +1,46 @@
 # Banco Digital
 
-Plataforma de banca digital — Parcial final de Análisis y Diseño de Sistemas.
+Proyecto para el parcial final de Análisis y Diseño de Sistemas.
 
-Monorepo con dos piezas que se comunican por una API REST:
+La idea es una banca digital donde el usuario puede ver su saldo, depositar, cambiar sus datos, cambiar su clave y su PIN, y retirar plata como si estuviera en un cajero.
 
-| Carpeta | Qué es | Stack |
-|---|---|---|
-| [`backend/`](backend) | API REST con arquitectura limpia (hexagonal) | Java 21, Spring Boot 4.1.2, Spring Security (HTTP Basic + BCrypt), Spring Data JPA, MySQL, Gradle |
-| `frontend/` | Panel web del cliente *(en construcción)* | Angular 22 |
+## Qué hay en el repo
 
-## Funcionalidades (historias de usuario)
+- `apibank/` → el backend, hecho en Spring Boot por Javier
+- `frontbank/` → el frontend en Angular (lo estoy armando por partes)
 
-| HU | Funcionalidad | Puntos |
-|---|---|---|
-| HU-01 | Consulta de saldo en tiempo real | 2 |
-| HU-02 | Depósito de fondos | 3 |
-| HU-03 | Actualización de datos personales | 3 |
-| HU-04 | Modificación de credenciales (clave y PIN) | 5 |
-| HU-05 | Retiro de efectivo (cajero inteligente) | 8 |
+## Cómo correr la API
 
-## Correr el backend
+Se necesita Java 21 y MySQL.
 
-Requisitos: JDK 21 y MySQL corriendo en `localhost:3306`.
+1. Crear la base de datos en MySQL:
+   ```sql
+   CREATE DATABASE bank_database;
+   ```
+2. Entrar a la carpeta y correrla:
+   ```bash
+   cd apibank
+   .\gradlew.bat bootRun
+   ```
+3. Queda en http://localhost:8080
 
-```sql
-CREATE DATABASE bank_database;
-```
+Si tu MySQL tiene contraseña, hay que cambiarla en `apibank/src/main/resources/application.yaml`.
+
+## Cómo correr el front
 
 ```bash
-cd backend
-./gradlew bootRun        # Windows: .\gradlew.bat bootRun
+cd frontbank
+npm install
+npm start
 ```
 
-La API queda en `http://localhost:8080`. Usuario y clave de MySQL en `backend/src/main/resources/application.yaml`.
+Queda en http://localhost:4200
 
-## Flujo de ramas
+## Ramas
 
-`feature` → `dev` → `main`. Todo se desarrolla en `feature`, se integra por Pull Request a `dev`, se verifica y luego se integra a `main`.
+Trabajamos en `feature`, de ahí pasamos a `dev` con un pull request y cuando todo funciona lo pasamos a `main`.
 
-## Créditos
+## Integrantes
 
-- Backend: [JavierWebDev](https://github.com/JavierWebDev) — historial original conservado en este repo.
-- Frontend: David Gómez.
+- Javier Andrés Gómez Labrador — backend
+- David Gómez — frontend

@@ -1,0 +1,34 @@
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">◆</span> Banca Digital</div>
+
+    <nav>
+      @for (item of menu; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active">
+          <span class="ico">{{ item.icon }}</span>{{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="side-balance">
+      <span>Saldo disponible</span>
+      <b class="money">{{ api.balance() | cop }}</b>
+    </div>
+
+    <div class="user">
+      <div class="avatar">{{ initials() }}</div>
+      <div class="who">
+        <b>{{ auth.profile()?.name }} {{ auth.profile()?.lastName }}</b>
+        <small>&#64;{{ auth.profile()?.user }}</small>
+      </div>
+      <button class="logout" title="Cerrar sesión" (click)="auth.logout()">⏻</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    @if (auth.mockMode()) {
+      <div class="mock-banner">Modo demo activo: los datos se simulan en el navegador, no se usa el backend.</div>
+    }
+    <router-outlet />
+  </main>
+</div>
