@@ -1,29 +1,34 @@
 # Banco Digital
 
-Proyecto para el parcial final de Análisis y Diseño de Sistemas.
+**Parcial final - Análisis y Diseño de Sistemas**
 
-Es una banca digital donde el usuario puede ver su saldo, depositar, cambiar sus datos, cambiar su clave y su PIN, y retirar plata como si estuviera en un cajero.
+---
 
-## Qué hay en el repo
+Banca digital donde el usuario puede ver su saldo, depositar, cambiar sus datos,
+cambiar su contraseña y su PIN, y retirar efectivo como si estuviera en un cajero.
 
-- `apibank/` → el backend, hecho en Spring Boot por Javier
-- `frontbank/` → el frontend, hecho en Angular
+## Funcionalidades
 
-## Lo que se puede hacer
+| Código | Pantalla | Qué hace |
+| ------ | -------- | -------- |
+| HU-01 | Consulta de saldo | Muestra el saldo, el número de cuenta y la hora |
+| HU-02 | Depósito | Deposita con montos rápidos; valida vacío, $0 y negativos |
+| HU-03 | Datos personales | Cambia correo, teléfono y dirección |
+| HU-04 | Credenciales | Cambia la contraseña y activa o cambia el PIN |
+| HU-05 | Retiro de efectivo | Retira con PIN (mínimo $10.000, tope $1.000.000 al día) |
 
-- **HU-01** Ver el saldo de la cuenta
-- **HU-02** Depositar plata
-- **HU-03** Cambiar correo, teléfono y dirección
-- **HU-04** Cambiar la contraseña y el PIN
-- **HU-05** Retirar efectivo (con PIN, mínimo de $10.000, tope de $1.000.000 al día y el cajero te dice qué billetes te da)
+## Estructura del repositorio
+
+| Carpeta | Contenido | Tecnología |
+| ------- | --------- | ---------- |
+| `apibank/` | Backend / API | Spring Boot - Java 21 |
+| `frontbank/` | Frontend | Angular |
 
 ## Cómo correrlo
 
-Hay que levantar las dos partes, cada una en su terminal.
+Requisitos: Java 21, MySQL y Node.js. Se levantan las dos partes, cada una en su terminal.
 
-### 1. La API
-
-Se necesita Java 21 y MySQL.
+### 1) API
 
 ```sql
 CREATE DATABASE bank_database;
@@ -34,9 +39,11 @@ cd apibank
 .\gradlew.bat bootRun
 ```
 
-Queda en http://localhost:8080. Si tu MySQL tiene contraseña, cámbiala en `apibank/src/main/resources/application.yaml`.
+Queda en http://localhost:8080
 
-### 2. El front
+> Si tu MySQL tiene contraseña, cámbiala en `apibank/src/main/resources/application.yaml`.
+
+### 2) Frontend
 
 ```bash
 cd frontbank
@@ -46,17 +53,23 @@ npm start
 
 Queda en http://localhost:4200
 
-Primero hay que registrarse, luego ir a **Seguridad** y activar el PIN, porque sin PIN no deja retirar.
+> Primero regístrate; luego ve a Seguridad y activa el PIN. Sin PIN no deja retirar.
 
-### Sin la API
+### Modo demo (sin API)
 
-Si no tienes MySQL o la API no arranca, en el login hay una casilla de **Modo demo** que simula todo en el navegador. Usuario `demo`, contraseña `demo1234` y PIN `1234`.
+Si no hay MySQL o la API no arranca, en el login marca la casilla "Modo demo"
+y se simula todo en el navegador.
+
+- Usuario: `demo`
+- Contraseña: `demo1234`
+- PIN: `1234`
 
 ## Ramas
 
-Trabajamos en `feature`, de ahí pasamos a `dev` con un pull request y cuando todo funciona lo pasamos a `main`.
+- `develop` -> rama de integración (se arma y se prueba todo aquí).
+- `main`    -> entrega final (la versión que se revisa).
 
 ## Integrantes
 
-- Javier Andrés Gómez Labrador — backend
-- David Gómez — frontend
+- Javier Andrés Gómez Labrador - backend
+- David Gómez - frontend
