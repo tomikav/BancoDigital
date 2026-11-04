@@ -10,7 +10,7 @@ export class AuthService {
   private router = inject(Router);
 
   profile = signal<UserProfile | null>(this.loadProfile());
-  mockMode = signal<boolean>(localStorage.getItem('mockMode') === 'true');
+  mockMode = signal<boolean>(sessionStorage.getItem('mockMode') === 'true');
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
@@ -24,7 +24,7 @@ export class AuthService {
     const token = btoa(user + ':' + password);
     const headers = new HttpHeaders({ Authorization: 'Basic ' + token });
 
-    return this.http.post<UserProfile>('/api/auth/login', null, { headers }).pipe(
+    return this.http.post<UserProfile>('/auth/login', null, { headers }).pipe(
       tap((profile) => {
         sessionStorage.setItem('token', token);
         this.saveProfile(profile);
@@ -46,7 +46,7 @@ export class AuthService {
 
   setMockMode(value: boolean) {
     this.mockMode.set(value);
-    localStorage.setItem('mockMode', String(value));
+    sessionStorage.setItem('mockMode', String(value));
   }
 
   logout(expired = false) {
