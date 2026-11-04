@@ -7,7 +7,7 @@ public class AccountNotFoundException extends RuntimeException {
     private final Long userId;
 
     public AccountNotFoundException(Long userId) {
-        super("[!] user {" + userId + "} has no bank account");
+        super("[!] el usuario {" + userId + "} no tiene cuenta bancaria");
         this.userId = userId;
     }
 

@@ -28,7 +28,7 @@ public class UpdatePersonalDataService implements UpdatePersonalDataUseCase {
             throws UserNotFoundException, InvalidPersonalDataException {
 
         if (command.getEmail() == null && command.getPhone() == null && command.getAddress() == null) {
-            throw new InvalidPersonalDataException("at least one of email, phone or address must be provided");
+            throw new InvalidPersonalDataException("debe enviar al menos el correo, el telefono o la direccion");
         }
 
         User user = loadUserPort.loadByUsername(command.getUsername())

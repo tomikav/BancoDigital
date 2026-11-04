@@ -7,7 +7,7 @@ public class UserNotFoundException extends RuntimeException {
     private final String username;
 
     public UserNotFoundException(String username) {
-        super("[!] username {" + username + "} not found");
+        super("[!] el usuario {" + username + "} no existe");
         this.username = username;
     }
 

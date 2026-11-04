@@ -33,6 +33,24 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+tasks.register('buildFront', Exec) {
+    workingDir '../frontbank'
+    inputs.dir('../frontbank/src')
+    inputs.dir('../frontbank/public')
+    inputs.file('../frontbank/angular.json')
+    inputs.file('../frontbank/package.json')
+    outputs.dir('../frontbank/dist')
+    def npm = System.getProperty('os.name').toLowerCase().contains('windows') ? 'npm.cmd' : 'npm'
+    commandLine npm, 'run', 'build'
+}
+
+tasks.named('processResources') {
+    dependsOn 'buildFront'
+    from('../frontbank/dist/banco-digital-fe/browser') {
+        into 'static'
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

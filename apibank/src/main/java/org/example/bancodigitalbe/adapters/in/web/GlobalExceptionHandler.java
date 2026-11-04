@@ -13,18 +13,26 @@ import org.example.bancodigitalbe.domain.exceptions.InvalidPinFormatException;
 import org.example.bancodigitalbe.domain.exceptions.InvalidPersonalDataException;
 import org.example.bancodigitalbe.domain.exceptions.UserNotFoundException;
 import org.example.bancodigitalbe.domain.exceptions.UsernameAlreadyExistsException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ApiErrorResponse> handleUsernameAlreadyExists(UsernameAlreadyExistsException e) {
@@ -128,7 +136,44 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .badRequest()
-                .body(new ApiErrorResponse("VALIDATION_ERROR", "[!] invalid request payload", fieldErrors));
+                .body(new ApiErrorResponse("VALIDATION_ERROR", "[!] hay campos con datos invalidos", fieldErrors));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiErrorResponse> handleUnreadableBody(HttpMessageNotReadableException e) {
+        return ResponseEntity
+                .badRequest()
+                .body(ApiErrorResponse.of("INVALID_BODY",
+                        "[!] el cuerpo de la peticion no es valido; revise el JSON, los numeros y las fechas (YYYY-MM-DD)"));
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ApiErrorResponse> handleMediaType(HttpMediaTypeNotSupportedException e) {
+        return ResponseEntity
+                .status(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+                .body(ApiErrorResponse.of("UNSUPPORTED_MEDIA_TYPE", "[!] el contenido debe enviarse como application/json"));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiErrorResponse> handleMethodNotAllowed(HttpRequestMethodNotSupportedException e) {
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)
+                .body(ApiErrorResponse.of("METHOD_NOT_ALLOWED", "[!] el metodo " + e.getMethod() + " no esta permitido en esta ruta"));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotFound(NoResourceFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ApiErrorResponse.of("NOT_FOUND", "[!] la ruta /" + e.getResourcePath() + " no existe"));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiErrorResponse> handleUnexpected(Exception e) {
+        log.error("Error inesperado", e);
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(ApiErrorResponse.of("INTERNAL_ERROR", "[!] ocurrio un error inesperado en el servidor"));
     }
 
 }
