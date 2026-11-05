@@ -51,7 +51,7 @@ public class SetPinService implements SetPinUseCase {
         if (currentEncodedPin.isPresent()
                 && (command.getCurrentPin() == null
                 || !passwordEncoder.matches(command.getCurrentPin(), currentEncodedPin.get()))) {
-            throw new InvalidCurrentCredentialException("pin");
+            throw new InvalidCurrentCredentialException("el PIN actual");
         }
 
         updateUserCredentialsPort.updatePin(

@@ -36,7 +36,7 @@ public class ChangePasswordService implements ChangePasswordUseCase {
 
         // HU-04 escenario 2: la clave actual tiene que coincidir
         if (!passwordEncoder.matches(command.getCurrentPassword(), user.getPassword())) {
-            throw new InvalidCurrentCredentialException("password");
+            throw new InvalidCurrentCredentialException("la contrasena actual");
         }
 
         updateUserCredentialsPort.updatePassword(
